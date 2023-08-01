@@ -9,7 +9,7 @@ description = "Spec-driven minimalist parser for IHS 297 and 298 formats"
 readme = "README.md"
 license = { file = "LICENSE" }
 authors = [{ name = "Derrick W. Turk", email = "dwt@terminusdatascience.com" }]
-requires-python = ">=3.11"
+requires-python = ">=3.10"
 classifiers = [
     "Programming Language :: Python :: Implementation :: CPython",
 ]
