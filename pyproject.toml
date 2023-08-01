@@ -19,5 +19,10 @@ dependencies = ["importlib-resources"]
 dev = ["build", "mypy", "vulture"]
 docs = ["pdoc"]
 
+[project.urls]
+Homepage = "https://github.com/derrickturk/ihs29x-python"
+Repository = "https://github.com/derrickturk/ihs29x-python"
+Documentation = "https://derrickturk.github.io/ihs29x-python/docs/ihs29x.html"
+
 [tool.vulture]
 min_confidence = 80

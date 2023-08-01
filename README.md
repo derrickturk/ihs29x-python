@@ -6,6 +6,8 @@ In accordance with my reading of the spec, it even handles intermixed formats wi
 
 The only interesting function is `ihs29x.stream_records`, which may be called on an open file-like object in text mode.
 
+Live documentation is available at https://derrickturk.github.io/ihs29x-python/docs/ihs29x.html.
+
 Available under the MIT license.
 
 ---
