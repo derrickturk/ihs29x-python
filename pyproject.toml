@@ -16,7 +16,7 @@ classifiers = [
 dependencies = ["importlib-resources"]
 
 [project.optional-dependencies]
-dev = ["build", "mypy", "vulture"]
+dev = ["build", "mypy", "twine", "vulture"]
 docs = ["pdoc"]
 
 [project.urls]

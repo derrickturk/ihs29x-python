@@ -47,6 +47,8 @@ Available targets:
     make repl: run Python REPL in venv
     make check: typecheck with mypy
     make package: package everything up for PyPI
+    make publish-test: publish to test PyPI using token
+    make publish: publish to PyPI using token
     make clean: remove venv and .venv directory
     make reinstall: reinstall package into venv, updating dependencies
 endef
@@ -72,6 +74,12 @@ check: $(VENVCFG)
 package: $(VENVCFG)
 	$(VENV_PYTHON) -m build
 
+publish-test: $(VENVCFG) package
+	$(VENV_PYTHON) -m twine upload --repository testpypi dist/* -u __token__
+
+publish: $(VENVCFG) package
+	$(VENV_PYTHON) -m twine upload dist/* -u __token__
+
 docs: $(VENVCFG)
 	$(VENV_PYTHON) -m pdoc -o docs ihs29x
 
@@ -86,4 +94,4 @@ $(VENVCFG): pyproject.toml
 reinstall:
 	$(REINSTALL)
 
-.PHONY: help venv repl check package docs clean reinstall
+.PHONY: help venv repl check package publish publish-test docs clean reinstall
