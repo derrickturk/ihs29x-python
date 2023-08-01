@@ -50,25 +50,43 @@ class RecordSpec(TypedDict):
     fields: list[FieldSpec]
 
 
+'''A latitude in degrees, minutes, seconds format.
+
+This is equivalent to the "G2" type in the IHS format spec.
+'''
 class LatitudeDMS(NamedTuple):
     degrees: int
     minutes: int
     seconds: int
 
 
+'''A longitude in degrees, minutes, seconds format.
+
+This is equivalent to the "G3" type in the IHS format spec.
+'''
 class LongitudeDMS(NamedTuple):
     degrees: int
     minutes: int
     seconds: int
 
 
+'''A single record (i.e. line) from an IHS 29x file.'''
 class Record(NamedTuple):
     indicator: str
+    '''The record type indicator field's value.
+
+    In other words, the first few characters of the line, which indicate what
+    type of record the line represents.
+    '''
+
     type: str
+    '''The record type, as described by the IHS spec.'''
+
     contents: dict[
       str,
       str | float | int | datetime | LatitudeDMS | LongitudeDMS | None
     ]
+    '''The record's fields, converted to appropriate types.'''
 
 
 class IndicatorTrie(NamedTuple):
@@ -266,6 +284,32 @@ def parse_record(line: str, spec: RecordSpec, field_parser: FieldParser,
 
 def stream_records(src: TextIO, strict: bool = False,
   indicators: set[str] | None = None) -> Iterator[Record]:
+    '''Stream records from an IHS 29x file.
+
+    File type (297/well header or 298/well production) and format (fixed or
+    comma-delimited) will be automatically determined.
+
+    In accordance with the spec, files may contain multiple types and formats,
+    each with their own header.
+
+    Parameters:
+      - `src`: a file or file-like object open in text mode
+
+      - `strict` (default `False`): if `True`, raise a `ValueError` when
+          encountering a field which cannot be converted to the appropriate type
+          as indicated by the spec; if `False`, these fields will be returned as
+          `str` values, but a warning will be issued for each one encountered
+
+      - `indicators` (default `None`): if provided, a set of indicator field
+          values (e.g. `'A'` for "General Information" records from a 297 file)
+          corresponding to rows which should be included in the output (rows
+          with indicators not in this set will be skipped, except that per-well
+          or per-entity start and end records [e.g. `'START_US_WELL'`] are
+          always included); if `None`, all rows will be processed
+
+    Returns an iterator over (selected) records from the file.
+    '''
+
     if indicators is not None:
         indicators |= {
             'START_US_WELL', 'END_US_WELL', 'START_US_PROD', 'END_US_PROD'
