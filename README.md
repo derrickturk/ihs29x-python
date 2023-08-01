@@ -10,4 +10,30 @@ Available under the MIT license.
 
 ---
 
+## Usage
+For example, try:
+```python
+import sys
+
+from ihs29x import stream_records
+
+
+def main(argv: list[str]) -> int:
+    if len(argv) != 2:
+        print(f'Usage {argv[0]} <298-or-297-file>', file=sys.stderr)
+        return 2
+
+    with open(argv[1]) as f:
+        for r in stream_records(f):
+            print(r)
+
+    return 0
+
+
+if __name__ == '__main__':
+    sys.exit(main(sys.argv))
+```
+
+---
+
 ### (c) 2023 terminus, LLC
