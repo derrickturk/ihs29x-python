@@ -291,6 +291,9 @@ def stream_records(src: TextIO, strict: bool = False,
 
     In accordance with the spec, files may contain multiple types and formats,
     each with their own header.
+    Headers will be streamed as `Record` objects whose `indicator` is either
+    `'US WELL DATA'` or `'US PRODUCTION DATA'` (for 297 or 298 formats
+    respectively) and whose `type` is `'File Header'`.
 
     Parameters:
       - `src`: a file or file-like object open in text mode
@@ -319,8 +322,9 @@ def stream_records(src: TextIO, strict: bool = False,
     count = 0
     while line := src.readline():
         trie, field_parser, hdr = parse_header(line)
-        print(hdr)
         count = int(hdr['Entity Count'])
+        yield Record(hdr['Data Type'], 'File Header', hdr)
+
         while line := src.readline():
             rec_spec = parse_record_spec(line, trie)
             if indicators is not None and rec_spec['indicator'] not in indicators:
