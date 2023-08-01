@@ -6,6 +6,8 @@ In accordance with my reading of the spec, it even handles intermixed formats wi
 
 The only interesting function is `ihs29x.stream_records`, which may be called on an open file-like object in text mode.
 
+Available under the MIT license.
+
 ---
 
 ### (c) 2023 terminus, LLC

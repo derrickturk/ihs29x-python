@@ -17,3 +17,4 @@ dependencies = ["importlib-resources"]
 
 [project.optional-dependencies]
 dev = ["build", "mypy", "vulture"]
+docs = ["pdoc"]

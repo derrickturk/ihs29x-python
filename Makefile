@@ -52,7 +52,7 @@ Available targets:
 endef
 
 define REINSTALL
-$(VENV_PYTHON) -m pip install -e .[dev]
+$(VENV_PYTHON) -m pip install -e .[dev,docs]
 $(VENV_PYTHON) -m mypy --install-types --non-interactive .
 endef
 
@@ -72,6 +72,9 @@ check: $(VENVCFG)
 package: $(VENVCFG)
 	$(VENV_PYTHON) -m build
 
+docs: $(VENVCFG)
+	$(VENV_PYTHON) -m pdoc -o docs ihs29x
+
 clean:
 	-$(RMDIR) .venv
 
@@ -83,4 +86,4 @@ $(VENVCFG): pyproject.toml
 reinstall:
 	$(REINSTALL)
 
-.PHONY: help venv repl check package clean reinstall
+.PHONY: help venv repl check package docs clean reinstall
