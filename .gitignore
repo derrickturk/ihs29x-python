@@ -1,4 +1,4 @@
-.venv/**
-dist/**
-docs/**
-**/__pycache__/**
+*
+!docs/
+!docs/*
+!.gitignore
